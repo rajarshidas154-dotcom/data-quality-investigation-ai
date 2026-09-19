@@ -2,6 +2,10 @@
 
 A local Python MVP for investigating CSV data quality with scikit-learn, retrieval, and an MCP server.
 
+
+<img width="1320" height="574" alt="image" src="https://github.com/user-attachments/assets/d6e22fc5-7f8c-42ad-a87c-5a4162782663" />
+
+
 ## Quick start on Windows
 
 Open a terminal in this folder and run:
