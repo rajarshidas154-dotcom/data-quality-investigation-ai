@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "data-quality-investigator": {
+      "command": "C:\\Users\\Windows\\Documents\\data-quality-assistant\\.venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "dqa.mcp_server"
+      ],
+      "env": {
+        "DQA_HOME": "C:\\Users\\Windows\\Documents\\data-quality-assistant"
+      }
+    }
+  }
+}

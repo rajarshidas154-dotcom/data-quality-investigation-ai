@@ -1,0 +1,533 @@
+{
+  "mode": "evidence_only",
+  "answer": "orders_current.csv: 510 rows; 10 duplicate rows.\namount: mean shifted 26.83 baseline standard deviations.\ncustomer_region: missingness increased by 7.84 percentage points.\norder_id: mean shifted 3.44 baseline standard deviations.\nIsolationForest flagged 219 unusual rows.\nThese observations do not establish a root cause. Review the retrieved runbooks and upstream changes.",
+  "evidence": {
+    "profile": {
+      "dataset": "orders_current.csv",
+      "rows": 510,
+      "column_count": 4,
+      "duplicate_rows": 10,
+      "columns": [
+        {
+          "name": "order_id",
+          "dtype": "int64",
+          "missing": 0,
+          "missing_pct": 0.0,
+          "unique": 500,
+          "mean": 747.656862745098,
+          "min": 501.0,
+          "max": 1000.0,
+          "non_finite": 0
+        },
+        {
+          "name": "amount",
+          "dtype": "float64",
+          "missing": 0,
+          "missing_pct": 0.0,
+          "unique": 481,
+          "mean": 583.2794901960784,
+          "min": 73.8,
+          "max": 14029.0,
+          "non_finite": 0
+        },
+        {
+          "name": "delivery_days",
+          "dtype": "int64",
+          "missing": 0,
+          "missing_pct": 0.0,
+          "unique": 6,
+          "mean": 4.123529411764705,
+          "min": 1.0,
+          "max": 40.0,
+          "non_finite": 0
+        },
+        {
+          "name": "customer_region",
+          "dtype": "object",
+          "missing": 40,
+          "missing_pct": 7.84,
+          "unique": 4
+        }
+      ]
+    },
+    "comparison": {
+      "baseline": "orders_baseline.csv",
+      "current": "orders_current.csv",
+      "baseline_rows": 500,
+      "current_rows": 510,
+      "row_count_change_pct": 2.0,
+      "added_columns": [],
+      "removed_columns": [],
+      "changes": [
+        {
+          "column": "amount",
+          "baseline_dtype": "float64",
+          "current_dtype": "float64",
+          "missing_change_pp": 0.0,
+          "baseline_mean": 119.76382000000001,
+          "current_mean": 583.2794901960784,
+          "mean_shift_in_baseline_std": 26.82557499647397,
+          "constant_baseline_changed": false
+        },
+        {
+          "column": "customer_region",
+          "baseline_dtype": "object",
+          "current_dtype": "object",
+          "missing_change_pp": 7.84
+        },
+        {
+          "column": "delivery_days",
+          "baseline_dtype": "int64",
+          "current_dtype": "int64",
+          "missing_change_pp": 0.0,
+          "baseline_mean": 3.014,
+          "current_mean": 4.123529411764705,
+          "mean_shift_in_baseline_std": 0.7897553603064319,
+          "constant_baseline_changed": false
+        },
+        {
+          "column": "order_id",
+          "baseline_dtype": "int64",
+          "current_dtype": "int64",
+          "missing_change_pp": 0.0,
+          "baseline_mean": 250.5,
+          "current_mean": 747.656862745098,
+          "mean_shift_in_baseline_std": 3.4409645366515083,
+          "constant_baseline_changed": false
+        }
+      ],
+      "note": "Mean shifts are descriptive, not statistical significance or proof of cause."
+    },
+    "anomalies": {
+      "features": [
+        "amount",
+        "delivery_days"
+      ],
+      "flagged_rows": 219,
+      "total_rows": 510,
+      "rows": [
+        {
+          "data_row": 12,
+          "score": -0.232507,
+          "values": {
+            "amount": 13400.0,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 14,
+          "score": -0.232507,
+          "values": {
+            "amount": 14029.0,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 140,
+          "score": -0.232507,
+          "values": {
+            "amount": 172.45,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 4,
+          "score": -0.222791,
+          "values": {
+            "amount": 13693.0,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 8,
+          "score": -0.222791,
+          "values": {
+            "amount": 11431.0,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 13,
+          "score": -0.222791,
+          "values": {
+            "amount": 12119.0,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 294,
+          "score": -0.212306,
+          "values": {
+            "amount": 73.8,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 2,
+          "score": -0.208502,
+          "values": {
+            "amount": 10128.0,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 5,
+          "score": -0.208502,
+          "values": {
+            "amount": 8488.0,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 10,
+          "score": -0.208502,
+          "values": {
+            "amount": 10465.0,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 18,
+          "score": -0.208502,
+          "values": {
+            "amount": 10274.0,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 249,
+          "score": -0.208502,
+          "values": {
+            "amount": 172.29,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 1,
+          "score": -0.20616,
+          "values": {
+            "amount": 12548.0,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 9,
+          "score": -0.20616,
+          "values": {
+            "amount": 11970.0,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 11,
+          "score": -0.20616,
+          "values": {
+            "amount": 13583.0,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 15,
+          "score": -0.20616,
+          "values": {
+            "amount": 12842.0,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 17,
+          "score": -0.20616,
+          "values": {
+            "amount": 12664.0,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 3,
+          "score": -0.203441,
+          "values": {
+            "amount": 13351.0,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 6,
+          "score": -0.203441,
+          "values": {
+            "amount": 9656.0,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 7,
+          "score": -0.203441,
+          "values": {
+            "amount": 12230.0,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 16,
+          "score": -0.203441,
+          "values": {
+            "amount": 10453.0,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 19,
+          "score": -0.203441,
+          "values": {
+            "amount": 13581.0,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 20,
+          "score": -0.203441,
+          "values": {
+            "amount": 11910.0,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 227,
+          "score": -0.192469,
+          "values": {
+            "amount": 165.31,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 391,
+          "score": -0.186761,
+          "values": {
+            "amount": 78.42,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 480,
+          "score": -0.179196,
+          "values": {
+            "amount": 166.76,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 237,
+          "score": -0.171801,
+          "values": {
+            "amount": 81.35,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 205,
+          "score": -0.157429,
+          "values": {
+            "amount": 83.1,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 376,
+          "score": -0.157147,
+          "values": {
+            "amount": 161.9,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 412,
+          "score": -0.155895,
+          "values": {
+            "amount": 77.99,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 228,
+          "score": -0.154749,
+          "values": {
+            "amount": 153.78,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 341,
+          "score": -0.144748,
+          "values": {
+            "amount": 78.76,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 143,
+          "score": -0.141358,
+          "values": {
+            "amount": 81.62,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 245,
+          "score": -0.137475,
+          "values": {
+            "amount": 158.33,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 301,
+          "score": -0.130996,
+          "values": {
+            "amount": 151.09,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 428,
+          "score": -0.130996,
+          "values": {
+            "amount": 150.97,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 497,
+          "score": -0.129498,
+          "values": {
+            "amount": 87.03,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 274,
+          "score": -0.124331,
+          "values": {
+            "amount": 157.68,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 378,
+          "score": -0.118281,
+          "values": {
+            "amount": 83.94,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 499,
+          "score": -0.117208,
+          "values": {
+            "amount": 84.17,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 31,
+          "score": -0.116011,
+          "values": {
+            "amount": 158.55,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 163,
+          "score": -0.114785,
+          "values": {
+            "amount": 158.31,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 454,
+          "score": -0.113641,
+          "values": {
+            "amount": 157.39,
+            "delivery_days": 3
+          }
+        },
+        {
+          "data_row": 282,
+          "score": -0.113322,
+          "values": {
+            "amount": 88.6,
+            "delivery_days": 5
+          }
+        },
+        {
+          "data_row": 95,
+          "score": -0.106089,
+          "values": {
+            "amount": 89.63,
+            "delivery_days": 4
+          }
+        },
+        {
+          "data_row": 61,
+          "score": -0.103266,
+          "values": {
+            "amount": 89.71,
+            "delivery_days": 40
+          }
+        },
+        {
+          "data_row": 482,
+          "score": -0.098847,
+          "values": {
+            "amount": 145.8,
+            "delivery_days": 1
+          }
+        },
+        {
+          "data_row": 464,
+          "score": -0.097373,
+          "values": {
+            "amount": 82.69,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 346,
+          "score": -0.096012,
+          "values": {
+            "amount": 82.86,
+            "delivery_days": 2
+          }
+        },
+        {
+          "data_row": 139,
+          "score": -0.095934,
+          "values": {
+            "amount": 155.94,
+            "delivery_days": 4
+          }
+        }
+      ],
+      "note": "Fit on baseline only; negative scores are unusual, not confirmed errors. Top 50 shown. Missing values use baseline medians. Data rows exclude the header."
+    }
+  },
+  "sources": [
+    {
+      "source": "orders_schema.md",
+      "offset": 0,
+      "text": "# Orders schema and lineage (synthetic demonstration)\nOwner: Analytics Engineering. This is sample documentation, not a real customer system.\n\nThe orders table is built from raw_checkout_events, joined to customer_profiles on customer_id,\nthen transformed by the daily orders_normalization job into analytics.orders.\nDownstream consumers include revenue_daily and delivery_performance.\n\norder_id is a unique business identifier, not a meaningful numeric model feature.\namount is the order amount in major currency units, such as dollars; never mix cents with dollars.\ndelivery_days is elapsed calendar days from dispatch to delivery.\ncustomer_region comes from the customer_profiles join. Missing customer_region values can indicate\nan unmatched customer key, a delayed dimension refresh, or an optional source field.\nCSV inferred types are not a substitute for a formal schema contract.",
+      "score": 0.1718
+    },
+    {
+      "source": "missing_and_duplicates.md",
+      "offset": 0,
+      "text": "# Runbook: missing regions and duplicate orders\nFor missing customer_region, check unmatched customer keys against customer_profiles.\nInspect dimension refresh completion and left-join coverage before blaming ingestion.\nCompare missingness as a percentage of rows, not only absolute counts.\n\nFor duplicate rows, inspect retry and replay behavior in raw_checkout_events.\nFull-row duplicates differ from duplicate business keys: also check order_id uniqueness separately.\nDo not remove rows automatically. Confirm replay behavior and downstream consumers with the data owner.\n\nFor elevated delivery_days, check carrier feed delays, timezone conversions and actual disruptions.\nA statistical outlier can be a valid late delivery. Check service-level rules before labeling it an error.",
+      "score": 0.1704
+    },
+    {
+      "source": "amount_runbook.md",
+      "offset": 0,
+      "text": "# Runbook: amount spikes and currency units\nApplies to analytics.orders and the amount column.\nIf amount jumps by approximately 100 times, investigate a cents-to-major-unit conversion change.\nThis is a hypothesis to check, not proof of a production defect.\nCompare affected records with raw_checkout_events and inspect the orders_normalization deployment.\nCheck currency codes and conversion rules before comparing values across currencies.\nSegment by source and ingestion date. Confirm whether a business promotion explains the change.\nDo not divide values automatically: obtain the owner-approved correction after confirming the cause.",
+      "score": 0.0457
+    }
+  ]
+}

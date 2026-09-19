@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Quality Investigator</title>
+<style>
+:root{color-scheme:light;--ink:#142b39;--muted:#586d7b;--line:#dce5e8;--green:#087f75}
+*{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:var(--ink);font:15px/1.55 system-ui,sans-serif}
+header{background:#122e3a;color:white;padding:27px max(5vw,20px);display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:750;font-size:19px}.tag{font-size:12px;border:1px solid #536b73;border-radius:20px;padding:5px 12px}
+main{max-width:1180px;margin:36px auto;padding:0 24px 50px}.eyebrow{color:var(--green);font-size:12px;font-weight:750;letter-spacing:2px}
+h1{font-size:36px;line-height:1.15;letter-spacing:-1px;margin:10px 0}h2{font-size:19px;margin:0 0 15px}p{color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:25px;margin:22px 0;box-shadow:0 3px 12px #18343d04}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:20px}label{display:block;font-weight:600;font-size:13px;margin-bottom:8px}
+select,textarea{width:100%;font:inherit;border:1px solid #becdd3;border-radius:8px;padding:11px;background:#fff;color:var(--ink)}
+textarea{resize:vertical;min-height:90px}button{background:var(--green);border:0;border-radius:8px;padding:12px 22px;color:white;font:600 14px system-ui;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}.actions{display:flex;gap:20px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.check{display:flex;align-items:center;gap:8px;margin:0;font-weight:400}.hint{font-size:12px;margin:10px 0 0}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.metric span{display:block;font-size:12px;color:var(--muted)}.metric strong{font-size:30px}
+.answer{white-space:pre-wrap;line-height:1.75}.pill{display:inline-block;font-size:11px;background:#e6f4ef;color:#116555;border-radius:20px;padding:4px 10px;margin-bottom:12px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px 12px;white-space:nowrap}th{color:var(--muted);font-weight:600;background:#f8fafb}
+.scroll{overflow:auto}summary{cursor:pointer;font-weight:600}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:#f5f8f9;padding:16px;border-radius:8px}
+.source{border-top:1px solid var(--line);padding:15px 0}.source p{white-space:pre-wrap;margin-bottom:0}.source small{color:var(--green)}
+#status{color:var(--muted);font-size:13px;margin-top:14px}#error{background:#fff0ea;color:#9b3616;padding:14px;border-radius:8px;margin:16px 0}
+footer{font-size:12px;color:var(--muted);margin-top:25px}a{color:var(--green)}
+@media(max-width:700px){.controls,.metrics{grid-template-columns:1fr 1fr}h1{font-size:29px}.panel{padding:18px}header{gap:12px}.tag{display:none}}
+@media(max-width:440px){.controls{grid-template-columns:1fr}.metrics{gap:8px}.metric{padding:14px}}
+</style></head><body>
+<header><div class="brand">◈ &nbsp; Data Quality Investigator</div><span class="tag">LOCAL WORKSPACE · v0.1</span></header>
+<main><div class="eyebrow">UNDERSTAND YOUR DATA</div><h1>From unusual data to useful evidence.</h1>
+<p>Compare a recent dataset with a trusted baseline. Investigate changes using your team's knowledge.</p>
+<section class="panel"><div class="controls"><div><label for="baseline">Baseline dataset</label><select id="baseline"></select></div>
+<div><label for="current">Current dataset</label><select id="current"></select></div></div>
+<p class="hint">Add UTF-8 CSV files to the project's data folder, then refresh. Maximum 50 MB / 100,000 rows per file.</p>
+<div style="margin-top:20px"><label for="question">What would you like to investigate?</label>
+<textarea id="question" maxlength="2000">Why did order amounts increase, and why are customer regions missing?</textarea></div>
+<div class="actions"><button id="run">Investigate changes</button><label class="check"><input type="checkbox" id="generate"> Use my local Ollama model</label></div>
+<div id="status" role="status" aria-live="polite">Loading datasets…</div><div id="error" role="alert" hidden></div></section>
+<div id="results" hidden><div class="metrics" id="metrics"></div>
+<section class="panel"><span class="pill" id="mode"></span><h2>Investigation findings</h2><div id="answer" class="answer"></div></section>
+<section class="panel"><h2>Column health</h2><div class="scroll" id="columns"></div></section>
+<section class="panel"><h2>Unusual numeric rows</h2><p id="anomalyNote" class="hint"></p><div class="scroll" id="anomalies"></div></section>
+<section class="panel"><h2>Retrieved knowledge</h2><div id="sources"></div></section>
+<section class="panel"><details><summary>Inspect complete evidence</summary><pre id="evidence"></pre></details>
+<button id="download" style="margin-top:18px">Download investigation JSON</button></section></div>
+<footer>Read-only analysis · Statistical flags require review · <a href="/docs">API documentation</a></footer></main>
+<script>
+const $=id=>document.getElementById(id); let report=null;
+function node(tag,text){const el=document.createElement(tag);el.textContent=text;return el}
+function table(target,headers,rows){const t=document.createElement('table'),head=document.createElement('tr');
+headers.forEach(h=>head.append(node('th',h)));const thead=document.createElement('thead');thead.append(head);t.append(thead);
+const body=document.createElement('tbody');rows.forEach(row=>{const tr=document.createElement('tr');row.forEach(v=>tr.append(node('td',v??'—')));body.append(tr)});t.append(body);$(target).replaceChildren(t)}
+async function request(url,options){const r=await fetch(url,options);const data=await r.json();if(!r.ok)throw Error(typeof data.detail==='string'?data.detail:JSON.stringify(data.detail));return data}
+async function init(){try{const names=await request('/api/datasets');for(const id of ['baseline','current'])names.forEach(n=>{const o=node('option',n);o.value=n;$(id).append(o)});
+if(names.includes('orders_baseline.csv'))$('baseline').value='orders_baseline.csv';
+if(names.includes('orders_current.csv'))$('current').value='orders_current.csv';
+$('run').disabled=!names.length;$('status').textContent=names.length?'Ready. Select datasets and start an investigation.':'No CSV files found. Run setup.cmd to create demo datasets.';
+}catch(e){$('error').hidden=false;$('error').textContent=e.message;$('run').disabled=true}}
+$('run').onclick=async()=>{$('run').disabled=true;$('error').hidden=true;$('results').hidden=true;$('status').textContent='Profiling, scoring anomalies and retrieving evidence…';
+try{const data=await request('/api/investigate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({current:$('current').value,baseline:$('baseline').value,question:$('question').value,generate:$('generate').checked})});
+report=data;const p=data.evidence.profile,a=data.evidence.anomalies;$('metrics').replaceChildren();
+for(const [label,value] of [['Current rows',p.rows],['Columns',p.column_count],['Duplicate rows',p.duplicate_rows],['Unusual rows',a.flagged_rows??'N/A']]){const c=document.createElement('div');c.className='metric';c.append(node('span',label),node('strong',value));$('metrics').append(c)}
+$('mode').textContent=data.mode==='local_rag'?'LOCAL RAG · MODEL GENERATED':'COMPUTED EVIDENCE · NO LLM';
+$('answer').textContent=data.answer;
+table('columns',['Column','Inferred type','Missing','Missing %','Unique','Mean'],p.columns.map(c=>[c.name,c.dtype,c.missing,c.missing_pct,c.unique,c.mean?.toFixed(2)]));
+$('anomalyNote').textContent=a.note??a.unavailable;
+table('anomalies',['Data row','Anomaly score',...(a.features??[])],(a.rows??[]).map(r=>[r.data_row,r.score,...a.features.map(f=>r.values[f])]));
+$('sources').replaceChildren();data.sources.forEach(s=>{const box=document.createElement('div');box.className='source';box.append(node('strong',s.source),node('br',''),node('small','Retrieval score '+s.score+' · character '+s.offset),node('p',s.text));$('sources').append(box)});
+if(!data.sources.length)$('sources').append(node('p','No relevant passages found. Add Markdown or text runbooks to the knowledge folder.'));
+$('evidence').textContent=JSON.stringify(data.evidence,null,2);$('results').hidden=false;$('status').textContent='Investigation complete.';
+if(data.generation_error){$('error').hidden=false;$('error').textContent=data.generation_error}
+}catch(e){$('error').hidden=false;$('error').textContent=e.message;$('status').textContent='Investigation could not complete.'}finally{$('run').disabled=false}};
+$('download').onclick=()=>{if(!report)return;const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='investigation.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+init();
+</script></body></html>
